@@ -1374,10 +1374,6 @@ html {
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
-}
-
 /* Loading animations */
 .fade-in {
   opacity: 0;
