@@ -283,6 +283,25 @@ function initScrollProgress() {
 // Initialize scroll progress
 initScrollProgress();
 
+// Initialize scroll line indicator
+function initScrollLine() {
+    const scrollLine = document.querySelector('.scroll-line');
+    if (!scrollLine) return;
+    
+    const scrollLineFill = scrollLine.querySelector('::after') || scrollLine;
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.body.offsetHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        
+        scrollLine.style.setProperty('--scroll-height', scrollPercent + '%');
+    });
+}
+
+// Initialize scroll line
+initScrollLine();
+
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {

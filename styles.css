@@ -439,55 +439,112 @@ body {
   gap: 1rem;
 }
 
-.scroll-wheel {
-  width: 30px;
-  height: 50px;
-  border: 2px solid var(--border-color);
-  border-radius: 15px;
-  position: relative;
-  cursor: pointer;
-  transition: var(--transition-normal);
-}
-
-.scroll-wheel:hover {
-  border-color: var(--primary-color);
-}
-
-.wheel-inner {
+.scroll-dot {
   width: 4px;
-  height: 8px;
+  height: 4px;
   background: var(--primary-color);
-  border-radius: 2px;
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: wheelScroll 2s infinite ease-in-out;
+  border-radius: 50%;
+  animation: scrollDotMove 2s ease-in-out infinite;
+  position: relative;
 }
 
-@keyframes wheelScroll {
+@keyframes scrollDotMove {
   0% {
-    top: 8px;
+    transform: translateY(0px);
     opacity: 1;
   }
   50% {
-    top: 16px;
-    opacity: 0.7;
+    transform: translateY(20px);
+    opacity: 0.3;
   }
   100% {
-    top: 24px;
-    opacity: 0;
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.scroll-line {
+  width: 2px;
+  height: 50px;
+  background: var(--border-color);
+  position: relative;
+  transition: var(--transition-fast);
+  animation: scrollLineBounce 2s ease-in-out infinite;
+  border-radius: 1px;
+}
+
+.scroll-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--scroll-height, 0%);
+  background: linear-gradient(
+    180deg,
+    var(--primary-color),
+    var(--primary-light)
+  );
+  transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: scrollFillPulse 1.5s ease-in-out infinite;
+  border-radius: 1px;
+}
+
+@keyframes scrollLineBounce {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes scrollFillPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.05);
   }
 }
 
 .scroll-text {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-light);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   transform: rotate(90deg);
   white-space: nowrap;
+  opacity: 0.8;
+  transition: var(--transition-fast);
+  font-weight: 500;
+}
+
+.scroll-indicator:hover .scroll-dot {
+  animation-play-state: paused;
+  background: var(--primary-light);
+}
+
+.scroll-indicator:hover .scroll-text {
+  opacity: 1;
+  color: var(--primary-color);
+  animation-play-state: paused;
+}
+
+.scroll-indicator:hover .scroll-line {
+  background: var(--primary-color);
+  animation-play-state: paused;
+}
+
+.scroll-indicator:hover .scroll-line::after {
+  animation-play-state: paused;
 }
 
 /* Section Styles */
