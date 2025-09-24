@@ -184,8 +184,7 @@ body {
 /* Hero Section */
 .hero {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 200px 1fr;
+  display: flex;
   align-items: center;
   position: relative;
   background: var(--light-bg);
@@ -193,10 +192,14 @@ body {
 }
 
 .hero-sidebar {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding-top: 4rem;
+  gap: 0.5rem;
+  padding: 2rem;
 }
 
 .hero-meta {
@@ -255,7 +258,6 @@ body {
 .hero-content {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding-left: 4rem;
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 4rem;
