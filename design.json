@@ -1,9 +1,0 @@
-{
-  "version": 1,
-  "settings": {
-    "design": {
-      "prompt": "Create a modern, artistic website that feels professional and handcrafted, not generic. Use bold typography, asymmetrical grid layouts, overlapping elements, and unique color palettes. Incorporate subtle animations (parallax scrolling, smooth transitions, hover effects, micro-interactions) to make the site feel alive. Hero sections should have striking visuals—gradient shifts, moving shapes, or interactive backgrounds. Take inspiration from award-winning sites on Awwwards, Behance, and Dribbble. Ensure the design has a strong visual identity, creative navigation elements, and cohesive branding across all pages. Prioritize originality, visual storytelling, and user engagement while keeping the experience clean and intuitive.",
-      "frozen": true
-    }
-  }
-}
