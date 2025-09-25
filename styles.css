@@ -75,9 +75,9 @@ body {
 }
 
 .nav-container {
-  max-width: var(--max-width);
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -128,6 +128,22 @@ body {
 .nav-menu {
   display: flex;
   gap: 2rem;
+  margin-left: 200px;
+}
+
+@media (min-width: 769px) {
+  .nav-menu {
+    position: relative;
+    left: auto;
+    width: auto;
+    height: auto;
+    background: transparent;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 0;
+    box-shadow: none;
+  }
 }
 
 .nav-link {
@@ -1397,18 +1413,19 @@ section {
 
 @media (max-width: 768px) {
   .nav-menu {
-    position: fixed;
-    top: 80px;
-    left: -100%;
-    width: 100%;
-    height: calc(100vh - 80px);
-    background: white;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 2rem;
-    transition: var(--transition-normal);
-    box-shadow: var(--shadow-lg);
+    position: fixed !important;
+    top: 80px !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: calc(100vh - 80px) !important;
+    background: white !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding-top: 2rem !important;
+    transition: var(--transition-normal) !important;
+    box-shadow: var(--shadow-lg) !important;
+    margin-left: 0 !important;
   }
 
   .nav-menu.active {
