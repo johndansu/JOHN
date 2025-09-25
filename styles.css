@@ -633,11 +633,14 @@ section {
   color: var(--text-secondary);
   border-radius: 12px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-family: var(--font-primary);
   border: 2px solid var(--border-color);
   position: relative;
   transition: all 0.3s ease;
+  text-align: center;
+  line-height: 1.2;
+  padding: 0.25rem;
 }
 
 .timeline-item:hover .timeline-year-number {
@@ -751,7 +754,8 @@ section {
   .timeline-year-number {
     width: 70px;
     height: 70px;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
+    padding: 0.2rem;
   }
 
   .timeline-content h3 {
