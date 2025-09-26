@@ -626,7 +626,14 @@
             </div>
           </div>
           <div class="contact-form">
-            <form id="contactForm" class="simple-form">
+            <form
+              id="contactForm"
+              class="simple-form"
+              action="https://formspree.io/f/xeoroprl"
+              method="POST"
+              data-formspree-success-redirect=""
+            >
+              <input type="hidden" name="_next" value="" />
               <div class="form-group">
                 <input
                   type="text"
@@ -753,5 +760,119 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      // Contact Form Handler
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = new FormData(form);
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+
+          // Show loading state
+          submitBtn.textContent = "Sending...";
+          submitBtn.disabled = true;
+
+          // Submit to Formspree
+          fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+              Accept: "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                // Success
+                form.reset();
+
+                // Show success notification
+                showNotification(
+                  "Thank you! I'll get back to you soon.",
+                  "success"
+                );
+
+                // Reset button immediately
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+              } else {
+                throw new Error("Form submission failed");
+              }
+            })
+            .catch((error) => {
+              // Error
+              showNotification(
+                "Something went wrong. Please try again.",
+                "error"
+              );
+
+              // Reset button immediately
+              submitBtn.textContent = originalText;
+              submitBtn.disabled = false;
+            });
+
+          // Notification function
+          function showNotification(message, type) {
+            // Remove existing notification
+            const existingNotification =
+              document.querySelector(".form-notification");
+            if (existingNotification) {
+              existingNotification.remove();
+            }
+
+            // Create notification element
+            const notification = document.createElement("div");
+            notification.className = `form-notification form-notification-${type}`;
+            notification.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-weight: 600; color: ${
+                  type === "success" ? "var(--primary-color)" : "#dc3545"
+                };">${type === "success" ? "✓" : "✗"}</span>
+                <span>${message}</span>
+              </div>
+            `;
+
+            // Add styles
+            notification.style.cssText = `
+              position: fixed;
+              top: 2rem;
+              right: 2rem;
+              background: white;
+              color: var(--text-dark);
+              padding: 1rem 1.5rem;
+              border-radius: 4px;
+              border: 1px solid var(--border-color);
+              box-shadow: var(--shadow-sm);
+              z-index: 10000;
+              transform: translateX(400px);
+              transition: transform 0.3s ease;
+              max-width: 280px;
+              font-family: var(--font-primary);
+              font-size: 0.9rem;
+            `;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+              notification.style.transform = "translateX(0)";
+            }, 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+              notification.style.transform = "translateX(400px)";
+              setTimeout(() => {
+                if (notification.parentNode) {
+                  notification.remove();
+                }
+              }, 300);
+            }, 5000);
+          }
+        });
+    </script>
   </body>
 </html>
