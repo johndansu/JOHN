@@ -48,63 +48,32 @@ body {
   color: var(--text-primary);
   background-color: var(--light-bg);
   overflow-x: hidden;
-  /* Ancient paper texture with wrinkles effect */
+  /* Ancient paper texture - optimized for performance */
   background-image: 
-    /* Paper grain noise */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
-    /* Diagonal wrinkle lines */
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 80px,
-      rgba(139, 105, 20, 0.03) 80px,
-      rgba(139, 105, 20, 0.05) 82px,
-      transparent 82px,
-      transparent 160px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 120px,
-      rgba(92, 64, 51, 0.04) 120px,
-      rgba(92, 64, 51, 0.06) 123px,
-      transparent 123px,
-      transparent 240px
-    ),
-    /* Horizontal fold creases */
+    /* Subtle paper grain */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+    /* Subtle fold crease */
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 300px,
-      rgba(61, 41, 20, 0.04) 300px,
-      rgba(61, 41, 20, 0.08) 302px,
-      rgba(61, 41, 20, 0.04) 304px,
-      transparent 304px,
-      transparent 600px
-    ),
-    /* Vertical fold creases */
-    repeating-linear-gradient(
-      90deg,
-      transparent,
       transparent 400px,
       rgba(61, 41, 20, 0.03) 400px,
-      rgba(61, 41, 20, 0.06) 402px,
-      rgba(61, 41, 20, 0.03) 404px,
-      transparent 404px,
+      rgba(61, 41, 20, 0.05) 402px,
+      transparent 402px,
       transparent 800px
     ),
     /* Base aged paper gradient */
     linear-gradient(180deg, 
-      rgba(244, 228, 193, 0.95) 0%, 
-      rgba(232, 212, 168, 0.9) 50%, 
-      rgba(239, 224, 195, 0.95) 100%
+      rgba(244, 228, 193, 1) 0%, 
+      rgba(239, 224, 195, 0.95) 50%, 
+      rgba(232, 212, 168, 1) 100%
     );
-  background-blend-mode: soft-light, overlay, overlay, overlay, overlay, normal;
+  background-blend-mode: soft-light, overlay, normal;
   background-attachment: fixed;
   position: relative;
 }
 
-/* Additional wrinkle overlay using pseudo-element */
+/* Corner aging overlay - simplified for performance */
 body::before {
   content: "";
   position: fixed;
@@ -115,23 +84,16 @@ body::before {
   pointer-events: none;
   z-index: 9999;
   background-image:
-    /* Corner wear/aging */
-    radial-gradient(ellipse at 0% 0%, rgba(139, 105, 20, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, rgba(92, 64, 51, 0.06) 0%, transparent 40%),
-    radial-gradient(ellipse at 0% 100%, rgba(92, 64, 51, 0.07) 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 100%, rgba(139, 105, 20, 0.09) 0%, transparent 50%),
-    /* Random crease marks */
-    linear-gradient(125deg, transparent 40%, rgba(61, 41, 20, 0.03) 40.5%, transparent 41%),
-    linear-gradient(235deg, transparent 60%, rgba(92, 64, 51, 0.025) 60.5%, transparent 61%),
-    linear-gradient(55deg, transparent 30%, rgba(139, 105, 20, 0.02) 30.3%, transparent 30.6%),
-    linear-gradient(185deg, transparent 70%, rgba(61, 41, 20, 0.025) 70.3%, transparent 70.6%);
-  opacity: 1;
+    radial-gradient(ellipse at 0% 0%, rgba(139, 105, 20, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 100%, rgba(139, 105, 20, 0.06) 0%, transparent 40%);
+  opacity: 0.8;
 }
 
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--container-padding);
+  width: 100%;
 }
 
 /* Navigation */
@@ -205,8 +167,8 @@ body::before {
 
 .nav-menu {
   display: flex;
-  gap: 2rem;
-  margin-left: 200px;
+  gap: 1.5rem;
+  margin-left: auto;
 }
 
 @media (min-width: 769px) {
@@ -301,6 +263,13 @@ body::before {
   padding: 2rem;
 }
 
+/* Hide sidebar on screens narrower than 1400px - needs wide screen to not overlap */
+@media (max-width: 1400px) {
+  .hero-sidebar {
+    display: none;
+  }
+}
+
 .hero-meta {
   display: flex;
   flex-direction: column;
@@ -358,9 +327,10 @@ body::before {
   max-width: var(--max-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 4rem;
+  grid-template-columns: 1fr minmax(300px, 400px);
+  gap: 3rem;
   align-items: center;
+  padding: 0 20px;
 }
 
 .hero-text {
@@ -406,6 +376,7 @@ body::before {
   color: var(--text-secondary);
   max-width: 500px;
   line-height: 1.6;
+  width: 100%;
 }
 
 .hero-buttons {
@@ -451,11 +422,13 @@ body::before {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
+  width: 100%;
 }
 
 .code-snippet {
   background: #1a1a1a;
   color: #e6e6e6;
+  overflow: hidden;
 }
 
 .code-header {
@@ -787,6 +760,7 @@ section {
   height: 3px;
   background: var(--primary-color);
   border-radius: 2px;
+  transition: left 0.3s ease;
 }
 
 .timeline-content p {
@@ -819,43 +793,7 @@ section {
   color: var(--primary-color);
 }
 
-/* Responsive Timeline */
-@media (max-width: 968px) {
-  .timeline-item {
-    grid-template-columns: 1fr !important;
-    gap: 2rem;
-    text-align: center;
-  }
-
-  .timeline-year {
-    order: 1 !important;
-  }
-
-  .timeline-content {
-    order: 2 !important;
-  }
-
-  .timeline-year-number {
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .timeline-content {
-    padding: 1.5rem;
-  }
-
-  .timeline-year-number {
-    width: 70px;
-    height: 70px;
-    font-size: 0.7rem;
-    padding: 0.2rem;
-  }
-
-  .timeline-content h3 {
-    font-size: 1.3rem;
-  }
-}
+/* Timeline responsive rules moved to main responsive section */
 
 .about-content {
   display: grid;
@@ -910,8 +848,8 @@ section {
 
 .image-container {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: min(300px, 80vw);
+  height: min(400px, 100vw);
   margin: 0 auto;
 }
 
@@ -965,8 +903,8 @@ section {
 /* Skills Section */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 2rem;
 }
 
 .skill-category {
@@ -991,8 +929,8 @@ section {
 
 .skill-items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
+  gap: 0.75rem;
 }
 
 .skill-item {
@@ -1028,7 +966,7 @@ section {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 2rem;
 }
 
@@ -1468,28 +1406,211 @@ section {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 0 var(--container-padding);
+
+/* Large screens - 1200px+ */
+@media (max-width: 1200px) {
+  .nav-container {
+    padding: 0 30px;
   }
 
-  .hero-sidebar {
-    display: none;
+  .hero-content {
+    gap: 2.5rem;
+  }
+
+  .footer-main {
+    gap: 3rem;
+  }
+}
+
+/* Large tablets and small desktops - 1024px */
+@media (max-width: 1024px) {
+  :root {
+    --container-padding: 0 25px;
+  }
+
+  .hero {
+    padding: 0 20px;
   }
 
   .hero-content {
     grid-template-columns: 1fr;
-    padding-left: 0;
     text-align: center;
+    gap: 2.5rem;
+  }
+
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
   }
 
   .hero-visual {
-    margin-top: 3rem;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  /* Hide decorative coffee stain on tablets */
+  .hero::after {
+    display: none;
+  }
+
+  .nav-container {
+    padding: 0 20px;
+  }
+
+  .nav-menu {
+    gap: 1.25rem;
+  }
+
+  .nav-text {
+    font-size: 0.85rem;
+  }
+
+  .timeline-item {
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+  }
+
+  .timeline-item:nth-child(even) {
+    grid-template-columns: 1fr 100px;
+  }
+
+  .timeline-year-number {
+    width: 70px;
+    height: 70px;
+    font-size: 0.7rem;
+  }
+
+  .about-content {
+    gap: 2.5rem;
+  }
+
+  .contact-content {
+    gap: 2.5rem;
+  }
+
+  .footer-main {
+    gap: 2.5rem;
+  }
+
+  .footer-links {
+    gap: 1.5rem;
+  }
+
+  .skills-grid {
+    gap: 1.5rem;
+  }
+
+  .projects-grid {
+    gap: 1.5rem;
   }
 }
 
-@media (max-width: 768px) {
+/* Tablets - 900px */
+@media (max-width: 900px) {
+  :root {
+    --section-padding: 80px 0;
+    --container-padding: 0 20px;
+  }
+
+  .nav-menu {
+    gap: 1rem;
+  }
+
+  .nav-number {
+    display: none;
+  }
+
+  .timeline-item,
+  .timeline-item:nth-child(even) {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .timeline-year {
+    order: 1 !important;
+  }
+
+  .timeline-content {
+    order: 2 !important;
+  }
+
+  .timeline-year-number {
+    margin: 0 auto;
+    width: 75px;
+    height: 75px;
+  }
+
+  .timeline-content h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-tags {
+    justify-content: center;
+  }
+
+  .about-content,
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-text {
+    text-align: center;
+  }
+
+  .about-text h3 {
+    text-align: center;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-brand {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-description {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .hero-visual {
+    max-width: 400px;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .skill-category {
+    padding: 2rem;
+  }
+
+  .project-content {
+    padding: 1.75rem;
+  }
+}
+
+/* Small tablets - 850px (bridge between 900 and 768) */
+@media (max-width: 850px) {
   .nav-menu {
     position: fixed !important;
     top: 80px !important;
@@ -1501,68 +1622,321 @@ section {
     justify-content: flex-start !important;
     align-items: center !important;
     padding-top: 2rem !important;
-    transition: var(--transition-normal) !important;
-    box-shadow: var(--shadow-lg) !important;
+    gap: 1.5rem !important;
+    transition: left 0.3s ease !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
     margin-left: 0 !important;
+    z-index: 999;
   }
 
   .nav-menu.active {
-    left: 0;
+    left: 0 !important;
   }
 
   .nav-toggle {
     display: flex;
   }
 
+  .nav-number {
+    display: inline;
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile landscape and small tablets - 768px */
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 60px 0;
+    --container-padding: 0 20px;
+  }
+
+  /* Nav toggle animation */
   .nav-toggle.active .bar:nth-child(2) {
     opacity: 0;
   }
 
   .nav-toggle.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+    transform: translateY(9px) rotate(45deg);
   }
 
   .nav-toggle.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  .nav-container {
+    height: 70px;
+  }
+
+  .nav-menu {
+    top: 70px !important;
+    height: calc(100vh - 70px) !important;
+  }
+
+  /* Logo - keep name visible */
+  .logo-details {
+    display: flex;
+  }
+
+  .logo-name {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  .logo-title {
+    font-size: 0.55rem;
+  }
+
+  .nav-logo .logo-text {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .nav-logo {
+    gap: 0.6rem;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: calc(100vh - 70px);
+    padding-top: 90px;
   }
 
   .hero-content {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 2rem;
+    padding: 0 10px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-badge {
+    margin-bottom: 1rem;
+  }
+
+  .badge-text {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 220px;
+    justify-content: center;
+    padding: 14px 20px;
   }
 
   .hero-visual {
-    height: 300px;
+    max-width: 100%;
   }
 
-  .about-content,
-  .contact-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  /* Hide decorative flourish on hero visual on mobile */
+  .hero-visual::before {
+    display: none;
+  }
+
+  .code-content {
+    padding: 1rem;
+    font-size: 0.8rem;
+    overflow-x: auto;
+  }
+
+  .code-line {
+    white-space: nowrap;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+
+  /* Sections */
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    padding: 0 10px;
+  }
+
+  /* About */
+  .about-text h3 {
+    font-size: 1.5rem;
+  }
+
+  .about-text p {
+    font-size: 1rem;
   }
 
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
 
-  .skills-grid {
-    grid-template-columns: 1fr;
+  .stat-number {
+    font-size: 1.8rem;
   }
 
-  .projects-grid {
-    grid-template-columns: 1fr;
+  .stat-label {
+    font-size: 0.75rem;
   }
 
-  .footer-main {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .image-container {
+    width: 240px;
+    height: 300px;
+  }
+
+  .image-decoration {
+    top: -10px;
+    left: -10px;
+  }
+
+  /* Experience */
+  .experience {
+    padding: 4rem 0;
+  }
+
+  .timeline-item {
+    margin-bottom: 3rem;
+  }
+
+  .timeline-content {
+    padding: 1.5rem;
+  }
+
+  .timeline-content h3 {
+    font-size: 1.25rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.95rem;
+  }
+
+  .timeline-year-number {
+    width: 70px;
+    height: 70px;
+    font-size: 0.7rem;
+  }
+
+  .timeline-tags .tag {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Skills */
+  .skill-category {
+    padding: 1.5rem;
+  }
+
+  .skill-category h3 {
+    font-size: 1.15rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .skill-item {
+    padding: 1rem;
+  }
+
+  .skill-item i {
+    font-size: 1.25rem;
+  }
+
+  .skill-item span {
+    font-size: 0.8rem;
+  }
+
+  /* Projects */
+  .project-content {
+    padding: 1.5rem;
+  }
+
+  .project-title {
+    font-size: 1.15rem;
+  }
+
+  .project-description {
+    font-size: 0.95rem;
+  }
+
+  .project-image {
+    height: 180px;
+  }
+
+  /* Contact */
+  .contact-info h3 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .contact-info p {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-method {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contact-method i {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .social-link {
+    width: 45px;
+    height: 45px;
+  }
+
+  .contact-form {
+    padding: 1.25rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 3rem 0 1.5rem;
   }
 
   .footer-links {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-column {
+    align-items: center;
   }
 
   .footer-bottom {
@@ -1575,45 +1949,192 @@ section {
     align-items: center;
   }
 
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
+  .footer-status {
+    font-size: 0.75rem;
   }
 
-  .btn {
-    width: 200px;
-    text-align: center;
-  }
-
-  .scroll-indicator {
-    right: 1rem;
-    bottom: 1rem;
+  .footer-tech {
+    font-size: 0.7rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
-@media (max-width: 480px) {
-  :root {
-    --section-padding: 80px 0;
-    --container-padding: 0 15px;
-  }
-
+/* Bridge breakpoint - 650px */
+@media (max-width: 650px) {
   .hero-title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 9vw, 3rem);
   }
 
-  .section-title {
-    font-size: 2rem;
+  .badge-text {
+    font-size: 0.65rem;
   }
 
-  .floating-card {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+  .stat-number {
+    font-size: 1.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
   }
 
   .image-container {
-    width: 250px;
-    height: 320px;
+    width: 200px;
+    height: 260px;
+  }
+
+  .timeline-content {
+    padding: 1.25rem;
+  }
+
+  .timeline-year-number {
+    width: 65px;
+    height: 65px;
+    font-size: 0.65rem;
+  }
+
+  .skill-item {
+    padding: 0.875rem;
+  }
+
+  .skill-item i {
+    font-size: 1.1rem;
+  }
+
+  .skill-item span {
+    font-size: 0.75rem;
+  }
+
+  .project-image {
+    height: 160px;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Small mobile - 550px */
+@media (max-width: 550px) {
+  .hero-visual {
+    max-width: 100%;
+  }
+
+  .code-content {
+    font-size: 0.7rem;
+    padding: 0.875rem;
+  }
+
+  .code-header {
+    padding: 0.75rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .timeline-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.9rem;
+  }
+
+  .timeline-tags .tag {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .contact-method {
+    max-width: 100%;
+  }
+
+  .social-link {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  :root {
+    --section-padding: 50px 0;
+    --container-padding: 0 15px;
+  }
+
+  /* Logo scales down but stays visible */
+  .logo-name {
+    font-size: 0.6rem;
+    letter-spacing: 0.5px;
+  }
+
+  .logo-title {
+    font-size: 0.5rem;
+  }
+
+  .nav-logo .logo-text {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .nav-logo {
+    gap: 0.5rem;
+  }
+
+  .nav-container {
+    padding: 0 15px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0;
+  }
+
+  .image-container {
+    width: 180px;
+    height: 230px;
+  }
+
+  .timeline-content {
+    padding: 1.25rem;
+  }
+
+  .skill-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .skill-item {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .skill-item i {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-item span {
+    font-size: 0.65rem;
   }
 
   .footer-links {
@@ -1621,16 +2142,88 @@ section {
     gap: 1.5rem;
   }
 
-  .footer-brand {
+  .contact-method {
+    flex-direction: column;
     text-align: center;
+    gap: 0.5rem;
   }
 
-  .footer-description {
-    max-width: none;
+  .project-placeholder {
+    font-size: 2rem;
   }
 
-  .contact-form {
-    padding: 1.25rem;
+  .code-content {
+    font-size: 0.65rem;
+    padding: 0.75rem;
+  }
+
+  .code-header {
+    padding: 0.75rem;
+  }
+
+  .code-filename {
+    font-size: 0.7rem;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  /* Logo stays visible even on smallest screens */
+  .logo-name {
+    font-size: 0.55rem;
+    letter-spacing: 0;
+  }
+
+  .logo-title {
+    font-size: 0.45rem;
+  }
+
+  .nav-logo .logo-text {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .nav-logo {
+    gap: 0.4rem;
+  }
+
+  .nav-container {
+    padding: 0 10px;
+    height: 60px;
+  }
+
+  .nav-menu {
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .btn {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+  }
+
+  .skill-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timeline-year-number {
+    width: 55px;
+    height: 55px;
+    font-size: 0.6rem;
   }
 }
 
@@ -1706,7 +2299,7 @@ html {
    FUN ANCIENT PAPER ELEMENTS
    ======================================== */
 
-/* Floating Dust Particles */
+/* Subtle Dust Particles - Static for performance */
 body::after {
   content: "";
   position: fixed;
@@ -1717,34 +2310,11 @@ body::after {
   pointer-events: none;
   z-index: 9998;
   background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(139, 105, 20, 0.3) 50%, transparent 50%),
-    radial-gradient(1.5px 1.5px at 30% 40%, rgba(92, 64, 51, 0.25) 50%, transparent 50%),
-    radial-gradient(1px 1px at 50% 15%, rgba(61, 41, 20, 0.3) 50%, transparent 50%),
-    radial-gradient(2px 2px at 70% 60%, rgba(139, 105, 20, 0.2) 50%, transparent 50%),
-    radial-gradient(1px 1px at 85% 30%, rgba(92, 64, 51, 0.25) 50%, transparent 50%),
-    radial-gradient(1.5px 1.5px at 15% 70%, rgba(61, 41, 20, 0.2) 50%, transparent 50%),
-    radial-gradient(1px 1px at 45% 85%, rgba(139, 105, 20, 0.3) 50%, transparent 50%),
-    radial-gradient(2px 2px at 90% 80%, rgba(92, 64, 51, 0.15) 50%, transparent 50%);
-  animation: dustFloat 20s ease-in-out infinite;
-}
-
-@keyframes dustFloat {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-    opacity: 0.6;
-  }
-  25% {
-    transform: translateY(-10px) translateX(5px);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-5px) translateX(-3px);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translateY(-15px) translateX(8px);
-    opacity: 0.7;
-  }
+    radial-gradient(1px 1px at 10% 20%, rgba(139, 105, 20, 0.2) 50%, transparent 50%),
+    radial-gradient(1px 1px at 50% 15%, rgba(61, 41, 20, 0.15) 50%, transparent 50%),
+    radial-gradient(1px 1px at 85% 30%, rgba(92, 64, 51, 0.15) 50%, transparent 50%),
+    radial-gradient(1px 1px at 45% 85%, rgba(139, 105, 20, 0.2) 50%, transparent 50%);
+  opacity: 0.5;
 }
 
 /* Wax Seal Effect on Logo */
@@ -1780,26 +2350,14 @@ body::after {
     0 6px 12px rgba(92, 26, 0, 0.5);
 }
 
-/* Ink Splatter Decorations on Section Headers */
+/* Decorative Flourish on Section Headers */
 .section-title::before {
   content: "❦";
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: var(--accent-color);
   margin-bottom: 0.5rem;
-  opacity: 0.6;
-  animation: inkDrip 3s ease-in-out infinite;
-}
-
-@keyframes inkDrip {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(3px);
-    opacity: 0.8;
-  }
+  opacity: 0.5;
 }
 
 /* Coffee Stain Ring - Decorative */
@@ -1820,13 +2378,7 @@ body::after {
   opacity: 0.7;
 }
 
-/* Quill-like cursor for interactive elements */
-.nav-link:hover,
-.btn:hover,
-.social-link:hover,
-.project-link:hover {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%235c4033' d='M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z'/%3E%3C/svg%3E"), pointer;
-}
+/* Keep default pointer for better performance */
 
 /* Paper Lifting Effect on Cards */
 .project-card,
@@ -1895,31 +2447,16 @@ body::after {
   margin-top: 15px;
 }
 
-/* Animated Quill on Hero Section */
+/* Quill Icon on Hero Badge */
 .hero-badge::before {
   content: "✒";
   margin-right: 0.5rem;
-  font-size: 1rem;
-  animation: quillWrite 2s ease-in-out infinite;
+  font-size: 0.9rem;
   display: inline-block;
+  transform: rotate(-10deg);
 }
 
-@keyframes quillWrite {
-  0%, 100% {
-    transform: rotate(-10deg) translateY(0);
-  }
-  25% {
-    transform: rotate(-5deg) translateY(-2px);
-  }
-  50% {
-    transform: rotate(-15deg) translateY(1px);
-  }
-  75% {
-    transform: rotate(-8deg) translateY(-1px);
-  }
-}
-
-/* Stat Numbers with Old-School Counter Effect */
+/* Stat Numbers with Subtle Underline */
 .stat-number {
   position: relative;
   display: inline-block;
@@ -1929,26 +2466,11 @@ body::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 10%;
+  right: 10%;
   height: 2px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--accent-color), 
-    transparent
-  );
-  animation: underlinePulse 2s ease-in-out infinite;
-}
-
-@keyframes underlinePulse {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scaleX(0.8);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scaleX(1);
-  }
+  background: var(--accent-color);
+  opacity: 0.4;
 }
 
 /* Timeline Year Hover - Seal Press Effect */

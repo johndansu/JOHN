@@ -142,16 +142,16 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
-    // Add styles
+    // Add styles - matching ancient paper theme
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        color: white;
+        background: ${type === 'success' ? '#5c4033' : type === 'error' ? '#8b2500' : '#6b5344'};
+        color: #f4e4c1;
         padding: 1rem 1.5rem;
         border-radius: 8px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 15px -3px rgba(61, 41, 20, 0.2);
         z-index: 10000;
         transform: translateX(100%);
         transition: transform 0.3s ease-in-out;
