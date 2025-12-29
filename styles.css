@@ -2450,12 +2450,18 @@ body::after {
 
 /* Decorative Flourish on Section Headers */
 .section-title::before {
-  content: "❦";
+  display: none; /* Hide pseudo-element, using real element now */
+}
+
+/* Real ornament element for dodge effect */
+.section-ornament {
   display: block;
   font-size: 1.2rem;
   color: var(--accent-color);
   margin-bottom: 0.5rem;
   opacity: 0.5;
+  transition: transform 0.15s ease-out;
+  cursor: default;
 }
 
 /* Coffee Stain Ring - Decorative */
@@ -2697,5 +2703,461 @@ body::after {
   /* Resume button on mobile */
   .btn-outline {
     border-width: 1px;
+  }
+}
+
+/* ============================================
+   SUBTLE ANIMATIONS - Performance Optimized
+   Using transform & opacity only (GPU accelerated)
+   ============================================ */
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide In From Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In From Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Hero Entrance Animations */
+.hero-badge {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.hero-title {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.hero-buttons {
+  animation: fadeInUp 0.6s ease-out 0.8s both;
+}
+
+.hero-visual {
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.code-window {
+  animation: slideInRight 0.7s ease-out 0.8s both;
+}
+
+/* Scroll-triggered animations (add .animate class via JS) */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for grid items */
+.animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+.animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+.animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+.animate-on-scroll.delay-4 { transition-delay: 0.4s; }
+.animate-on-scroll.delay-5 { transition-delay: 0.5s; }
+.animate-on-scroll.delay-6 { transition-delay: 0.6s; }
+
+/* Section headers animation */
+.section-header {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.section-header.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Timeline items slide in alternating */
+.timeline-item {
+  opacity: 0;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.timeline-item:nth-child(odd) {
+  transform: translateX(-20px);
+}
+
+.timeline-item:nth-child(even) {
+  transform: translateX(20px);
+}
+
+.timeline-item.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Skill categories */
+.skill-category {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.skill-category.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Project cards */
+.project-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.project-card.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Contact section */
+.contact-info {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.contact-info.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.contact-form-container {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.contact-form-container.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* About section */
+.about-text {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.about-text.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.about-image {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.about-image.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Subtle hover enhancements */
+.btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+/* Image container subtle float */
+.image-container {
+  transition: transform 0.3s ease;
+}
+
+.image-container:hover {
+  transform: translateY(-5px);
+}
+
+/* Stat numbers subtle pulse on hover */
+.stat-item {
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: scale(1.05);
+}
+
+/* Form input focus animation */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 3px rgba(92, 64, 51, 0.1);
+}
+
+/* ============================================
+   PLAYFUL ANIMATIONS - Still Performance Safe
+   ============================================ */
+
+/* Bounce keyframe */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Wiggle keyframe */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(92, 64, 51, 0.3); }
+  50% { box-shadow: 0 0 20px 5px rgba(92, 64, 51, 0.15); }
+}
+
+/* Gentle float */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Pop in */
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Skill icons wiggle on hover */
+.skill-item:hover i {
+  animation: wiggle 0.4s ease-in-out;
+}
+
+/* Timeline year badges bounce on hover */
+.timeline-year-number:hover {
+  animation: bounce 0.5s ease;
+}
+
+/* Navigation links playful underline grow */
+.nav-link::after {
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Buttons bounce on click */
+.btn:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* Project cards tilt on hover */
+.project-card:hover {
+  transform: translateY(-8px) rotate(-1deg);
+}
+
+/* Hero badge playful entrance */
+.hero-badge {
+  animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both;
+}
+
+/* Code window gentle float */
+.code-window {
+  animation: slideInRight 0.7s ease-out 0.8s both;
+}
+
+.code-window:hover {
+  animation: gentleFloat 3s ease-in-out infinite;
+}
+
+/* Scroll indicator bounce */
+.scroll-indicator {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* Social links pop on hover */
+.social-link {
+  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.social-link:hover {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+/* Contact method icons bounce */
+.contact-icon {
+  transition: transform 0.3s ease;
+}
+
+.contact-method:hover .contact-icon {
+  animation: bounce 0.5s ease;
+}
+
+/* Footer links playful hover */
+.footer-links a {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-links a:hover {
+  transform: translateX(5px);
+}
+
+/* Stats playful hover */
+.stat-item:hover .stat-number {
+  animation: bounce 0.4s ease;
+}
+
+/* Image container playful tilt */
+.image-container:hover {
+  transform: translateY(-8px) rotate(2deg);
+}
+
+/* Form submit button pulse when focused */
+.btn-primary:focus {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Tag pills bounce on hover */
+.tag:hover,
+.timeline-tags .tag:hover {
+  transform: translateY(-3px) scale(1.05);
+  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Project tech tags stagger pop */
+.project-tech span {
+  transition: transform 0.2s ease;
+}
+
+.project-card:hover .project-tech span:nth-child(1) { transform: translateY(-2px); transition-delay: 0s; }
+.project-card:hover .project-tech span:nth-child(2) { transform: translateY(-2px); transition-delay: 0.05s; }
+.project-card:hover .project-tech span:nth-child(3) { transform: translateY(-2px); transition-delay: 0.1s; }
+.project-card:hover .project-tech span:nth-child(4) { transform: translateY(-2px); transition-delay: 0.15s; }
+.project-card:hover .project-tech span:nth-child(5) { transform: translateY(-2px); transition-delay: 0.2s; }
+
+/* Back to top button bounce */
+.back-to-top:hover {
+  animation: bounce 0.5s ease;
+}
+
+/* Logo stamp wobble on hover */
+.nav-logo:hover .logo-text {
+  animation: wiggle 0.3s ease;
+}
+
+/* Section title ornament (❦) - dodge effect via JS */
+
+/* Code lines stagger animation on hover */
+.code-window:hover .code-line:nth-child(1) { transform: translateX(3px); transition: transform 0.2s ease 0s; }
+.code-window:hover .code-line:nth-child(2) { transform: translateX(3px); transition: transform 0.2s ease 0.1s; }
+.code-window:hover .code-line:nth-child(3) { transform: translateX(3px); transition: transform 0.2s ease 0.2s; }
+
+.code-line {
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+/* Skill category title underline grow on hover */
+.skill-category h3 {
+  position: relative;
+}
+
+.skill-category h3::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.skill-category:hover h3::after {
+  width: 50%;
+  left: 25%;
+}
+
+/* Timeline content card playful lift */
+.timeline-content:hover {
+  transform: translateY(-5px) rotate(0.5deg);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Hero visual decorative flourish spin on hover */
+.hero-visual:hover::before {
+  transform: rotate(360deg);
+  transition: transform 0.8s ease;
+}
+
+/* Approved stamp wiggle periodically */
+@keyframes stampWiggle {
+  0%, 90%, 100% { transform: rotate(-15deg); }
+  93% { transform: rotate(-18deg); }
+  96% { transform: rotate(-12deg); }
+}
+
+.hero::after {
+  animation: stampPress 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1s both,
+             stampWiggle 8s ease-in-out 2s infinite;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -76,42 +76,54 @@ function initSmoothScrolling() {
 }
 
 
-// Scroll animations
+// Scroll animations - Performance optimized
 function initScrollAnimations() {
     const observerOptions = {
-        threshold: 0.1,
+        threshold: 0.15,
         rootMargin: '0px 0px -50px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.classList.add('animated');
+                // Unobserve after animation to save resources
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
     
-    // Add fade-in class to elements that should animate
-    const animateElements = document.querySelectorAll('.section-header, .about-content, .skills-grid, .projects-grid, .contact-content');
-    animateElements.forEach(el => {
-        el.classList.add('fade-in');
+    // Section headers
+    document.querySelectorAll('.section-header').forEach(el => {
         observer.observe(el);
     });
     
-    // Animate skill items on scroll
-    const skillItems = document.querySelectorAll('.skill-item');
-    skillItems.forEach((item, index) => {
-        item.style.animationDelay = `${index * 0.1}s`;
-        item.classList.add('fade-in');
+    // Timeline items with staggered delay
+    document.querySelectorAll('.timeline-item').forEach((item, index) => {
+        item.style.transitionDelay = `${index * 0.15}s`;
         observer.observe(item);
     });
     
-    // Animate project cards
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.2}s`;
-        card.classList.add('fade-in');
+    // Skill categories with staggered delay
+    document.querySelectorAll('.skill-category').forEach((item, index) => {
+        item.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(item);
+    });
+    
+    // Project cards with staggered delay
+    document.querySelectorAll('.project-card').forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.15}s`;
         observer.observe(card);
+    });
+    
+    // About section elements
+    document.querySelectorAll('.about-text, .about-image').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Contact section elements
+    document.querySelectorAll('.contact-info, .contact-form-container').forEach(el => {
+        observer.observe(el);
     });
 }
 

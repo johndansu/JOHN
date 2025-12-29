@@ -880,6 +880,37 @@
           behavior: 'smooth'
         });
       });
+
+      // Playful Section Ornament (❦) Dodge Effect
+      // Create real ornament elements that can be tracked
+      document.querySelectorAll('.section-header').forEach(header => {
+        const title = header.querySelector('.section-title');
+        if (!title) return;
+        
+        // Create ornament span and insert before title
+        const ornament = document.createElement('span');
+        ornament.className = 'section-ornament';
+        ornament.textContent = '❦';
+        header.insertBefore(ornament, title);
+        
+        header.addEventListener('mousemove', (e) => {
+          const ornamentRect = ornament.getBoundingClientRect();
+          const ornamentCenterX = ornamentRect.left + ornamentRect.width / 2;
+          const mouseX = e.clientX;
+          
+          // Calculate distance and dodge
+          const distance = mouseX - ornamentCenterX;
+          const maxDodge = 20;
+          
+          // Dodge opposite to mouse
+          const dodgeAmount = distance > 0 ? -maxDodge : maxDodge;
+          ornament.style.transform = `translateX(${dodgeAmount}px)`;
+        });
+        
+        header.addEventListener('mouseleave', () => {
+          ornament.style.transform = 'translateX(0)';
+        });
+      });
     </script>
   </body>
 </html>
