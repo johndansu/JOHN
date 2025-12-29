@@ -417,6 +417,70 @@ body::before {
   color: var(--light-bg);
 }
 
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px dashed var(--primary-color);
+  gap: 0.5rem;
+}
+
+.btn-outline:hover {
+  background: rgba(92, 64, 51, 0.08);
+  border-style: solid;
+}
+
+.btn-outline i {
+  font-size: 0.9em;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: var(--light-bg);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(92, 64, 51, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.back-to-top::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 228, 193, 0.3);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--accent-color);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(92, 64, 51, 0.4);
+}
+
+.back-to-top:active {
+  transform: translateY(-1px);
+}
+
 .hero-visual {
   background: var(--light-surface);
   border: 1px solid var(--border-color);
@@ -716,8 +780,7 @@ section {
 }
 
 .timeline-content {
-  background: rgba(244, 228, 193, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(244, 228, 193, 0.98);
   padding: 2.5rem;
   border-radius: 20px;
   border: 1px solid rgba(201, 184, 150, 0.5);
@@ -903,7 +966,7 @@ section {
 /* Skills Section */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
 
@@ -929,7 +992,7 @@ section {
 
 .skill-items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
 
@@ -1844,6 +1907,11 @@ section {
   }
 
   /* Skills */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
   .skill-category {
     padding: 1.5rem;
   }
@@ -1863,6 +1931,10 @@ section {
 
   .skill-item span {
     font-size: 0.8rem;
+  }
+
+  .skill-items {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   /* Projects */
@@ -2121,7 +2193,7 @@ section {
   }
 
   .skill-items {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .skill-item {
@@ -2318,36 +2390,53 @@ body::after {
 }
 
 /* Wax Seal Effect on Logo */
+/* Authentic Stamp Effect */
 .nav-logo .logo-text {
   position: relative;
-  background: linear-gradient(145deg, #8b2500, #5c1a00);
-  color: #f4e4c1 !important;
-  border: none !important;
-  box-shadow: 
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
-    0 4px 8px rgba(92, 26, 0, 0.4);
+  background: transparent;
+  color: #8b2500 !important;
+  border: 3px solid #8b2500 !important;
+  font-weight: 800;
+  letter-spacing: -1px;
   transition: all 0.3s ease;
+  /* Ink bleed effect */
+  text-shadow: 
+    0.5px 0.5px 0 #8b2500,
+    -0.5px -0.5px 0 #8b2500,
+    0.5px -0.5px 0 #8b2500,
+    -0.5px 0.5px 0 #8b2500;
 }
 
+/* Outer decorative ring */
 .nav-logo .logo-text::before {
   content: "";
   position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 30%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid #8b2500;
   border-radius: 50%;
+  opacity: 0.6;
 }
 
+/* Inner decorative ring */
+.nav-logo .logo-text::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid #8b2500;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+/* Stamp pressed effect on hover */
 .nav-logo .logo-text:hover {
-  transform: scale(1.05) rotate(-5deg);
-  box-shadow: 
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
-    0 6px 12px rgba(92, 26, 0, 0.5);
+  transform: rotate(-8deg);
+  opacity: 0.85;
 }
 
 /* Decorative Flourish on Section Headers */
@@ -2544,4 +2633,29 @@ body::after {
     var(--primary-color), 
     var(--accent-color)
   );
+}
+
+/* Back to top button responsive */
+@media (max-width: 768px) {
+  .back-to-top {
+    width: 45px;
+    height: 45px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-to-top {
+    width: 42px;
+    height: 42px;
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  /* Resume button on mobile */
+  .btn-outline {
+    border-width: 1px;
+  }
 }
