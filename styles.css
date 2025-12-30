@@ -253,6 +253,7 @@ body::before {
   background: var(--light-bg);
   padding: 0 var(--container-padding);
   padding-top: 80px; /* Account for fixed navbar */
+  overflow: hidden;
 }
 
 .hero-sidebar {
@@ -342,6 +343,8 @@ body::before {
 
 .hero-badge {
   margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .badge-text {
@@ -504,6 +507,8 @@ body::before {
   justify-content: space-between;
   padding: 1rem;
   background: #2a2a2a;
+  position: relative;
+  overflow: hidden;
   border-bottom: 1px solid #333;
 }
 
@@ -544,6 +549,24 @@ body::before {
 .code-line {
   display: flex;
   margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: codeFadeIn 0.5s ease forwards;
+}
+
+/* Staggered fade-in for each code line */
+.code-line:nth-child(1) { animation-delay: 1.2s; }
+.code-line:nth-child(2) { animation-delay: 1.5s; }
+.code-line:nth-child(3) { animation-delay: 1.8s; }
+
+@keyframes codeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .line-number {
@@ -696,6 +719,7 @@ section {
 .section-header {
   text-align: center;
   margin-bottom: 4rem;
+  position: relative;
 }
 
 .section-title {
@@ -716,6 +740,8 @@ section {
 /* About Section */
 .about {
   background: var(--light-surface);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Experience Section */
@@ -917,6 +943,44 @@ section {
   width: min(300px, 80vw);
   height: min(400px, 100vw);
   margin: 0 auto;
+}
+
+/* Layer 1 - Back frame (furthest behind) */
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 20px;
+  opacity: 0.15;
+  z-index: -2;
+  transition: transform 0.3s ease;
+}
+
+/* Layer 2 - Middle frame */
+.image-container::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 20px;
+  opacity: 0.25;
+  z-index: -1;
+  transition: transform 0.3s ease;
+}
+
+.image-container:hover::before {
+  transform: translate(5px, 5px);
+}
+
+.image-container:hover::after {
+  transform: translate(3px, 3px);
 }
 
 .profile-image {
@@ -1223,6 +1287,7 @@ section {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   box-shadow: var(--shadow-sm);
+  position: relative;
 }
 
 .simple-form {
@@ -2442,11 +2507,7 @@ body::after {
   opacity: 0.4;
 }
 
-/* Stamp pressed effect on hover */
-.nav-logo .logo-text:hover {
-  transform: rotate(-8deg);
-  opacity: 0.85;
-}
+/* Stamp pressed effect on hover - handled by stampWiggle animation */
 
 /* Decorative Flourish on Section Headers */
 .section-title::before {
@@ -2582,14 +2643,7 @@ body::after {
   margin-top: 15px;
 }
 
-/* Quill Icon on Hero Badge */
-.hero-badge::before {
-  content: "✒";
-  margin-right: 0.5rem;
-  font-size: 0.9rem;
-  display: inline-block;
-  transform: rotate(-10deg);
-}
+/* Quill Icon removed - was causing layout issues */
 
 /* Stat Numbers with Subtle Underline */
 .stat-number {
@@ -2802,17 +2856,7 @@ body::after {
 .animate-on-scroll.delay-5 { transition-delay: 0.5s; }
 .animate-on-scroll.delay-6 { transition-delay: 0.6s; }
 
-/* Section headers animation */
-.section-header {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-
-.section-header.animated {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* Section headers animation - uses .revealed class from new effects */
 
 /* Timeline items slide in alternating */
 .timeline-item {
@@ -2826,6 +2870,11 @@ body::after {
 
 .timeline-item:nth-child(even) {
   transform: translateX(20px);
+}
+
+.timeline-item.revealed {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .timeline-item.animated {
@@ -3089,10 +3138,7 @@ body::after {
   animation: bounce 0.5s ease;
 }
 
-/* Logo stamp wobble on hover */
-.nav-logo:hover .logo-text {
-  animation: wiggle 0.3s ease;
-}
+/* Logo stamp wobble on hover - see stampWiggle animation below */
 
 /* Section title ornament (❦) - dodge effect via JS */
 
@@ -3151,6 +3197,953 @@ body::after {
              stampWiggle 8s ease-in-out 2s infinite;
 }
 
+/* ===========================================
+   ANCIENT PAPER THEME EFFECTS
+   GPU-accelerated, performance-friendly
+   =========================================== */
+
+/* ===========================================
+   VISIBLE AMBIENT ANIMATIONS
+   Always present, subtle & atmospheric
+   =========================================== */
+
+/* --- FLOATING INK BLOTS --- */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0.08;
+  animation: floatBlot1 12s ease-in-out infinite;
+  box-shadow: 
+    60vw 30vh 0 4px rgba(92, 64, 51, 0.05),
+    20vw 60vh 0 6px rgba(92, 64, 51, 0.04),
+    80vw 70vh 0 3px rgba(92, 64, 51, 0.06);
+  pointer-events: none;
+}
+
+@keyframes floatBlot1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(15px, -20px) rotate(90deg); }
+  50% { transform: translate(-10px, -35px) rotate(180deg); }
+  75% { transform: translate(20px, -15px) rotate(270deg); }
+}
+
+/* --- TYPEWRITER EFFECT ON "EXPERIENCES" --- */
+.hero-title {
+  position: relative;
+}
+
+/* Title lines fade in first */
+.hero-title .title-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: lineReveal 0.5s ease forwards;
+}
+
+.hero-title .title-line:nth-child(1) { animation-delay: 0.2s; }
+.hero-title .title-line:nth-child(2) { animation-delay: 0.5s; }
+
+/* Experiences typewriter effect */
+.hero-title .title-line.accent {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+.hero-title .title-line.accent .typewriter-container {
+  display: inline;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.hero-title .title-line.accent .typed-char {
+  opacity: 0;
+  transition: opacity 0.05s ease;
+  color: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+/* Blinking caret after Experiences */
+.hero-title .typing-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--accent-color);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.8s step-end infinite;
+}
+
+.hero-title .typing-cursor.hidden {
+  display: none;
+}
+
+@keyframes lineReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes charReveal {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* --- AVAILABILITY PULSE --- */
+.hero-sidebar::before {
+  content: "";
+  position: absolute;
+  top: 47px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: #4a7c59;
+  border-radius: 50%;
+  animation: availPulse 2s ease-in-out infinite;
+}
+
+@keyframes availPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(74, 124, 89, 0.4); }
+  50% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(74, 124, 89, 0); }
+}
+
+/* --- PAPER CORNER CURL --- */
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, transparent 50%, rgba(92, 64, 51, 0.08) 50%);
+  pointer-events: none;
+  z-index: 1;
+  animation: cornerCurl 8s ease-in-out infinite;
+}
+
+@keyframes cornerCurl {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-3px, -3px) rotate(-2deg); }
+}
+
+/* --- ANIMATED SECTION DIVIDERS --- */
+section::after {
+  content: "❧";
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  opacity: 0.3;
+  margin-top: 4rem;
+  animation: flourishSway 6s ease-in-out infinite;
+}
+
+section:last-of-type::after {
+  display: none;
+}
+
+@keyframes flourishSway {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(3deg) scale(1.02); }
+  75% { transform: rotate(-3deg) scale(1.02); }
+}
+
+/* --- INK DRIP ON TIMELINE --- */
+.timeline::before {
+  animation: inkFlow 4s ease-in-out infinite;
+}
+
+@keyframes inkFlow {
+  0%, 100% { background-position: 0 0; }
+  50% { background-position: 0 10px; }
+}
+
+/* --- CODE WINDOW TYPING EFFECT --- */
+.code-window .code-line:nth-child(1)::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--primary-color);
+  opacity: 0;
+  animation: typingCursor 3s ease-in-out infinite;
+  animation-delay: 0s;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.code-window .code-line:nth-child(2)::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--primary-color);
+  opacity: 0;
+  animation: typingCursor 3s ease-in-out infinite;
+  animation-delay: 1s;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.code-window .code-line:nth-child(3)::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--primary-color);
+  opacity: 0;
+  animation: typingCursor 3s ease-in-out infinite;
+  animation-delay: 2s;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+@keyframes typingCursor {
+  0%, 30%, 100% { opacity: 0; }
+  5%, 25% { opacity: 0.7; }
+}
+
+/* --- STATS COUNTING SHIMMER --- */
+.stat-number {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    var(--text-primary) 40%,
+    var(--primary-color) 50%,
+    var(--text-primary) 60%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerCount 4s ease-in-out infinite;
+}
+
+@keyframes shimmerCount {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: -100% 0; }
+}
+
+/* --- SKILL ICONS GENTLE BOUNCE --- */
+.skill-item:nth-child(odd) i {
+  animation: gentleBounce1 4s ease-in-out infinite;
+}
+
+.skill-item:nth-child(even) i {
+  animation: gentleBounce2 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes gentleBounce1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes gentleBounce2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* --- PROJECT ICON ROTATE --- */
+.project-icon i {
+  animation: iconSpin 20s linear infinite;
+}
+
+@keyframes iconSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* --- FOOTER STAMP PRESS --- */
+.footer-brand .logo-text {
+  animation: stampBreath 5s ease-in-out infinite;
+}
+
+@keyframes stampBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* --- CONTACT ICONS WAVE --- */
+.contact-method:nth-child(1) i {
+  animation: waveIcon 3s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.contact-method:nth-child(2) i {
+  animation: waveIcon 3s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.contact-method:nth-child(3) i {
+  animation: waveIcon 3s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+@keyframes waveIcon {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(-5deg); }
+  75% { transform: translateY(-2px) rotate(5deg); }
+}
+
+/* --- FORM PLACEHOLDER FADE --- */
+.form-input::placeholder {
+  animation: placeholderFade 4s ease-in-out infinite;
+}
+
+@keyframes placeholderFade {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+/* --- SOCIAL LINKS ORBIT --- */
+.social-links {
+  position: relative;
+}
+
+.social-links::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  border: 1px dashed rgba(92, 64, 51, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbitSpin 30s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes orbitSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* --- BACK TO TOP ARROW BOUNCE --- */
+.back-to-top.visible i {
+  animation: arrowBounce 2s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* --- HERO BADGE SHINE - Applied to badge-text instead --- */
+.badge-text {
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-text::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: badgeShine 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes badgeShine {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
+/* ===========================================
+   MORE VISIBLE AMBIENT ANIMATIONS
+   =========================================== */
+
+/* --- FLOATING DECORATIVE DOTS --- */
+.about::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: 8%;
+  width: 6px;
+  height: 6px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: floatDots 8s ease-in-out infinite;
+  box-shadow: 
+    -50px 80px 0 4px rgba(92, 64, 51, 0.1),
+    30px 150px 0 3px rgba(92, 64, 51, 0.08),
+    -80px 200px 0 5px rgba(92, 64, 51, 0.06);
+  pointer-events: none;
+}
+
+@keyframes floatDots {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-10px, 15px); }
+  66% { transform: translate(8px, -10px); }
+}
+
+/* --- PULSING SECTION ORNAMENTS --- */
+.section-ornament {
+  animation: ornamentPulse 4s ease-in-out infinite;
+}
+
+@keyframes ornamentPulse {
+  0%, 100% { opacity: 0.5; transform: translateX(var(--ornament-dodge, 0)) scale(1); }
+  50% { opacity: 0.7; transform: translateX(var(--ornament-dodge, 0)) scale(1.1); }
+}
+
+/* --- TIMELINE DOTS HEARTBEAT --- */
+.timeline-dot {
+  animation: dotHeartbeat 3s ease-in-out infinite;
+}
+
+@keyframes dotHeartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+  60% { transform: scale(1); }
+}
+
+/* --- NAV LINKS - Smooth fade on hover --- */
+.nav-link {
+  transition: color 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+/* --- FLOATING QUILL ICON --- */
+.hero-visual::after {
+  content: "✒";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  opacity: 0.3;
+  animation: quillFloat 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes quillFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-5px, -8px) rotate(-10deg); }
+  50% { transform: translate(3px, -12px) rotate(5deg); }
+  75% { transform: translate(-3px, -5px) rotate(-5deg); }
+}
+
+/* --- SKILL CATEGORY BORDER GLOW --- */
+.skill-category {
+  position: relative;
+}
+
+.skill-category::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  animation: borderGlow 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: rgba(92, 64, 51, 0.15); }
+}
+
+/* --- PROJECT CARD PAPER RUSTLE --- */
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(92, 64, 51, 0.1), 
+    transparent
+  );
+  animation: paperRustle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes paperRustle {
+  0%, 100% { transform: scaleX(0.5); opacity: 0; }
+  50% { transform: scaleX(1); opacity: 1; }
+}
+
+/* --- CONTACT FORM INK WELL --- */
+.contact-form::before {
+  content: "🪶";
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  font-size: 1.2rem;
+  opacity: 0.3;
+  animation: inkWellBob 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes inkWellBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(10deg); }
+}
+
+/* --- IMAGE FRAME SHIMMER - Applied to profile-image instead --- */
+.profile-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: frameShimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes frameShimmer {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
+/* --- SCROLL INDICATOR INK DROP --- */
+.scroll-indicator::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateX(-50%);
+  animation: inkDrop 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes inkDrop {
+  0%, 100% { opacity: 0; top: -10px; }
+  50% { opacity: 0.5; top: 5px; }
+}
+
+/* --- BUTTON TEXT SHIMMER --- */
+.btn-primary .btn-text,
+.btn-primary span {
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 40%,
+    rgba(255, 255, 255, 0.7) 50%,
+    #fff 60%,
+    #fff 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 4s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: -100% 0; }
+}
+
+/* --- FOOTER WAVE --- */
+.footer::before {
+  animation: footerWave 10s ease-in-out infinite !important;
+}
+
+@keyframes footerWave {
+  0%, 100% { 
+    clip-path: polygon(
+      0% 5%, 10% 3%, 20% 6%, 30% 2%, 40% 5%, 
+      50% 3%, 60% 6%, 70% 2%, 80% 5%, 90% 3%, 100% 5%,
+      100% 100%, 0% 100%
+    );
+  }
+  50% { 
+    clip-path: polygon(
+      0% 3%, 10% 6%, 20% 2%, 30% 5%, 40% 3%, 
+      50% 6%, 60% 2%, 70% 5%, 80% 3%, 90% 6%, 100% 3%,
+      100% 100%, 0% 100%
+    );
+  }
+}
+
+/* --- APPROVED STAMP - Initial press only, no continuous animation --- */
+.hero::after {
+  animation: stampPress 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1s both !important;
+}
+
+/* --- CODE WINDOW SCREEN FLICKER --- */
+.code-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0;
+  animation: screenFlicker 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes screenFlicker {
+  0%, 100% { opacity: 0; }
+  48%, 52% { opacity: 1; }
+}
+
+/* --- TIMELINE LINE PULSE --- */
+.timeline::before {
+  background: linear-gradient(
+    to bottom,
+    var(--primary-color),
+    rgba(92, 64, 51, 0.3),
+    var(--primary-color)
+  ) !important;
+  background-size: 100% 200% !important;
+  animation: timelinePulse 4s ease-in-out infinite !important;
+}
+
+@keyframes timelinePulse {
+  0%, 100% { background-position: 0 0; }
+  50% { background-position: 0 100%; }
+}
+
+/* --- INK SPREAD BUTTON EFFECT --- */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(92, 64, 51, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* --- PAPER CARD 3D TILT --- */
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.project-card:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-8px);
+  box-shadow: 
+    8px 12px 25px rgba(92, 64, 51, 0.2),
+    0 0 0 1px rgba(92, 64, 51, 0.1);
+}
+
+/* --- SKILL ITEM INK DOT PULSE --- */
+.skill-item {
+  position: relative;
+}
+
+.skill-item::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.skill-item:hover::before {
+  opacity: 0.6;
+  transform: scale(1);
+}
+
+/* --- TIMELINE DOT RIPPLE --- */
+.timeline-dot {
+  position: relative;
+}
+
+.timeline-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.timeline-item:hover .timeline-dot::after {
+  transform: translate(-50%, -50%) scale(1.8);
+  opacity: 0.3;
+}
+
+/* --- IMAGE FRAME GENTLE FLOAT --- */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+.image-container {
+  animation: gentleFloat 6s ease-in-out infinite;
+}
+
+/* --- SOCIAL LINK INK SPLASH --- */
+.social-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.social-link::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.social-link:hover::before {
+  width: 80%;
+}
+
+.social-link:hover i {
+  transform: translateY(-3px) scale(1.1);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* --- CONTACT METHOD ICON BOUNCE --- */
+.contact-method {
+  transition: transform 0.3s ease;
+}
+
+.contact-method:hover {
+  transform: translateX(5px);
+}
+
+.contact-method:hover i {
+  animation: iconBounce 0.5s ease;
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* --- FORM INPUT QUILL LINE --- */
+.form-input {
+  position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 15px rgba(92, 64, 51, 0.1);
+}
+
+/* --- NAV LOGO WAX SEAL GLOW --- */
+.nav-logo .logo-text {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.nav-logo:hover .logo-text {
+  box-shadow: 
+    0 0 0 8px rgba(92, 64, 51, 0.3),
+    0 0 20px rgba(92, 64, 51, 0.2),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+  transform: scale(1.1) rotate(-8deg);
+}
+
+/* --- STAT NUMBER INK REVEAL --- */
+.stat-number {
+  position: relative;
+}
+
+.stat-item:hover .stat-number {
+  transform: scale(1.1);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* --- SCROLL INDICATOR QUILL BOB --- */
+@keyframes quillBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.scroll-indicator {
+  animation: quillBob 2s ease-in-out infinite;
+}
+
+/* --- HERO BADGE STAMP EFFECT - Applied to badge-text --- */
+.badge-text {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge-text:hover {
+  transform: rotate(-2deg) scale(1.02);
+  box-shadow: 3px 3px 10px rgba(92, 64, 51, 0.2);
+}
+
+/* --- SECTION REVEAL ON SCROLL --- */
+.section-header,
+.about-content,
+.skills-grid,
+.projects-grid,
+.contact-content {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-header.revealed,
+.about-content.revealed,
+.skills-grid.revealed,
+.projects-grid.revealed,
+.contact-content.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- FOOTER LINK STAGGER --- */
+.footer-list li {
+  transition: transform 0.3s ease;
+}
+
+.footer-list li:hover {
+  transform: translateX(5px);
+}
+
+.footer-list li a::after {
+  content: " →";
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.footer-list li:hover a::after {
+  opacity: 0.7;
+  transform: translateX(0);
+}
+
+/* --- CODE WINDOW PAPER SHADOW --- */
+.code-window {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.code-window:hover {
+  transform: translateY(-5px) rotate(0.5deg);
+  box-shadow: 
+    10px 15px 30px rgba(92, 64, 51, 0.15),
+    0 0 0 1px rgba(92, 64, 51, 0.08);
+}
+
+/* --- BACK TO TOP QUILL RISE --- */
+.back-to-top {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 8px 25px rgba(92, 64, 51, 0.3);
+}
+
+/* --- TIMELINE YEAR STAMP PRESS --- */
+.timeline-year-number {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.timeline-item:hover .timeline-year-number {
+  transform: scale(1.1) rotate(-2deg);
+  color: var(--primary-color);
+}
+
+/* --- TAG PILLS SHUFFLE --- */
+.tag {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px) rotate(-1deg);
+  background: rgba(92, 64, 51, 0.15);
+}
+
+/* --- DECORATIVE INK SPLATTER ON HEADERS --- */
+.section-header::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  opacity: 0.3;
+  transform: translateX(-50%);
+  box-shadow: 
+    -15px 8px 0 2px rgba(92, 64, 51, 0.15),
+    18px 5px 0 1px rgba(92, 64, 51, 0.1),
+    -8px -5px 0 1px rgba(92, 64, 51, 0.12);
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -3159,5 +4152,14 @@ body::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .section-header,
+  .about-content,
+  .skills-grid,
+  .projects-grid,
+  .contact-content {
+    opacity: 1;
+    transform: none;
   }
 }

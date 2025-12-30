@@ -881,6 +881,55 @@
         });
       });
 
+      // Typewriter Effect for "Experiences"
+      const experiencesLine = document.querySelector('.hero-title .title-line.accent');
+      if (experiencesLine) {
+        const text = experiencesLine.textContent.trim();
+        experiencesLine.innerHTML = '<span class="typewriter-container"></span><span class="typing-cursor"></span>';
+        const container = experiencesLine.querySelector('.typewriter-container');
+        const cursor = experiencesLine.querySelector('.typing-cursor');
+        
+        // Start typing after other lines reveal (0.8s delay)
+        let charIndex = 0;
+        const typeSpeed = 150; // ms per character (slower typing)
+        
+        setTimeout(() => {
+          const typeInterval = setInterval(() => {
+            if (charIndex < text.length) {
+              const char = document.createElement('span');
+              char.className = 'typed-char';
+              char.textContent = text[charIndex];
+              char.style.animationDelay = '0s';
+              container.appendChild(char);
+              // Trigger animation
+              requestAnimationFrame(() => {
+                char.style.opacity = '1';
+              });
+              charIndex++;
+            } else {
+              clearInterval(typeInterval);
+              // Hide cursor after typing complete, then show briefly
+              setTimeout(() => {
+                cursor.classList.add('hidden');
+              }, 2000);
+            }
+          }, typeSpeed);
+        }, 800);
+      }
+
+      // Scroll Reveal Animation (GPU-friendly)
+      const revealElements = document.querySelectorAll('.section-header, .about-content, .skills-grid, .projects-grid, .contact-content, .timeline-item');
+      
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+      
+      revealElements.forEach(el => revealObserver.observe(el));
+
       // Playful Section Ornament (❦) Dodge Effect
       // Create real ornament elements that can be tracked
       document.querySelectorAll('.section-header').forEach(header => {
