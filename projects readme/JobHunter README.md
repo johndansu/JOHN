@@ -417,7 +417,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "title": "Senior Software Engineer",
+  "title": "Software Engineer",
   "company": "Tech Corp",
   "location": "San Francisco",
   "url": "https://example.com/job/123"
