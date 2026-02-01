@@ -1,4 +1,4 @@
-# Dansu John's Portfolio
+# Dansu John Mauyon's Portfolio
 
 My personal portfolio website showcasing my journey as a full-stack developer and DevOps enthusiast.
 
@@ -86,7 +86,7 @@ My portfolio is fully responsive with breakpoints at:
 
 ## 📧 Get In Touch
 
-**Dansu John**
+**Dansu John Mauyon**
 
 - 📧 Email: dansu.jw@gmail.com
 - 📱 Phone: +234 810 389 2539

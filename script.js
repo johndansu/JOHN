@@ -320,7 +320,7 @@ initLazyLoading();
 
 // Console welcome message
 console.log(`
-Welcome to Dansu John's Portfolio!
+Welcome to Dansu John Mauyon's Portfolio!
 A minimal, clean design focused on content and usability.
 `);
 
